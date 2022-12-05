@@ -1,0 +1,89 @@
+/* header title font */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+
+.main-header .logo {
+    font-family: Montserrat;
+    font-weight: bold;
+    font-size: 24px;
+    height: 70px;
+    line-height: 70px;
+}
+
+/* Adjusting the height of sidebar-toggle */
+.sidebar-toggle {
+    height: 70px;
+    padding: 25px 0px;
+}
+
+.main-header .sidebar-toggle {
+    padding: 25px 0px;
+}
+
+/* Adjusting the height of sidebarMenu */
+.left-side, .main-sidebar {
+    padding-top: 70px;
+    font-size: 16px;
+}
+
+/* backgroun color of header (logo part) */
+.skin-blue .main-header .logo {
+    background-color: #214E9C;
+}
+
+/* background color of header (logo part) when mouse hovered */
+.skin-blue .main-header .logo:hover {
+    background-color: #214E9C;
+}
+
+/* background color of navbar (rest of the header) */
+.skin-blue .main-header .navbar {
+    background-color: #214E9C;
+}        
+
+/* main sidebar */
+.skin-blue .main-sidebar {
+    background-color: #969696;
+}
+
+/* active selected tab in the sidebarMenu */
+.skin-blue .main-sidebar .sidebar .sidebar-menu .active a{
+    background-color: white;
+    color: black;
+}
+
+/* color in tabs when they are not selected in the sidebarMenu */
+.skin-blue .main-sidebar .sidebar .sidebar-menu a{
+    background-color: #969696;
+    color: white;
+}
+
+/* color in tab in the sidebarMenu when mouse hovered */
+.skin-blue .main-sidebar .sidebar .sidebar-menu a:hover{
+    background-color: #d9d9d9;
+    color: black;
+}
+
+/* toggle button when mouse hovered  */                    
+.skin-blue .main-header .navbar .sidebar-toggle:hover{
+    background-color: #214E9C;
+}
+
+.box.box-solid.box-primary>.box-header {
+     color:#fff;
+     background: #214E9C
+ }
+ 
+/**/
+.box.box-solid.box-primary{
+    border-bottom-color:#214E9C;
+    border-left-color:#214E9C;
+    border-right-color:#214E9C;
+    border-top-color:#666666;
+ }
+
+/**/
+.datepicker {
+    z-index:99999 !important;
+}
+
+
