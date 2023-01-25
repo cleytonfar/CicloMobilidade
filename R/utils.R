@@ -1,3 +1,26 @@
+#' Processing data from Strava dataset
+#' 
+#' @description 
+#' This function will process the monthly dataset files from Strava Metro. Specifically, 
+#' it will process the metadata file and merge with the related shapefile.
+#' 
+#' @details 
+#' The information provided by Strava Metro is a set of directory containing data 
+#' about all rides in hourly, daily and monthly period. This function is aimed to
+#' be used with the monthly data, that is, files contained in the 
+#' all_edges_monthly_* directory.
+#' 
+#' @param metadata data.frame containing metadata about the rides.
+#' @param shape data.frame containing the geographic features (shapefile) of the rides.
+#' @param dataVar character name of the column representing the "period" of the metadata file. 
+#' For files from all_edges_monthly_*, this accounts for "month".
+#'
+#' @return a data.frame with the metadata merged with its geographic features.
+#' 
+#' @import data.table, stats
+#' 
+#' @export
+
 processing_strava = function(metadata, 
                              shape,
                              dateVar
@@ -198,6 +221,31 @@ processing_strava = function(metadata,
 }
 
 
+#' Spatial merge between Strava and Cycling Network
+#' 
+#' @description 
+#' This function will perform a spatial merge between dataset from Strava Metro
+#' and the cycling network.
+#' 
+#' @details 
+#' The spatial merge is done using a buffering of the cycling network (15 meters),
+#' and then joining it with ride information from Strava by using the 'within distance (5 meters)'
+#' criteria. This process is able to identify the rides that are covered by the
+#' cycling network.
+#' 
+#' 
+#' @param strava data.frame/data.table object with ride information from Strava. 
+#' This is the result from the processing_strava() function.
+#' @param malhaPermanente data.frame with the geographical features from the 
+#' cycling network. Basically, it is the object resulted from reading the .shp file
+#' using the sf package.
+#'
+#' @return a data.table object with ride information merged with 
+#' geographical features from the cycling network.
+#' 
+#' @import data.table, sf
+#' 
+#' @export
 
 spatialMerge_stravaMalhaPermanente <- function(strava,
                                                malhaPermanente) {
@@ -243,6 +291,33 @@ spatialMerge_stravaMalhaPermanente <- function(strava,
 }
 
 
+
+#' Spatial merge between Strava and Cycling Network Proposal
+#' 
+#' @description 
+#' This function will perform a spatial merge between dataset from Strava Metro
+#' and the proposal cycling network.
+#' 
+#' @details 
+#' The spatial merge is done using a buffering of the cycling network (15 meters),
+#' and then joining it with ride information from Strava by using the 'within distance (5 meters)'
+#' criteria. This process is able to identify the rides that are covered by the
+#' cycling network.
+#' 
+#' 
+#' @param strava data.frame/data.table object with ride information from Strava. 
+#' This is the result from the processing_strava() function.
+#' @param malhaPermanente data.frame with the geographical features from the 
+#' cycling network. Basically, it is the object resulted from reading the .shp file
+#' using the sf package.
+#'
+#' @return a data.table object with ride information merged with 
+#' geographical features from the cycling network.
+#' 
+#' @import data.table, sf
+#' 
+#' @export
+
 spatialMerge_stravaMalhaPDC <- function(strava,
                                         malhaPDC) {
     ## Identificar trechos do strava com cobertura de malha cicloviária
@@ -287,7 +362,28 @@ spatialMerge_stravaMalhaPDC <- function(strava,
 }
 
 
-# Função para calcular a interseção entre a malha Permanente e Operacional:
+#' Calculate intersection between two cycling networks
+#' 
+#' @description 
+#' This function will calculate the intersection between two cycling networks.
+#' 
+#' @details 
+#' The calculation is done by using a buffering of one of the cycling network (5 meters),
+#' and then calculate the intersection with he other cycling network. #' 
+#' 
+#' @param malhaPermanente data.frame/data.table object with ride information from Strava. 
+#' This is the result from the processing_strava() function.
+#' @param malhaOperacional data.frame with the geographical features from the 
+#' cycling network. Basically, it is the object resulted from reading the .shp file
+#' using the sf package.
+#'
+#' @return a data.table object with information from malhaPermanente with the
+#' calculated intersection with malhaOperacional.
+#' 
+#' @import data.table, sf, dplyr
+#' 
+#' @export
+
 calcIntersectionMalhas <- function(malhaPermanente, 
                                    malhaOperacional
                                    ) {
@@ -300,6 +396,21 @@ calcIntersectionMalhas <- function(malhaPermanente,
     res
 }
 
+#' Compute stats for ride traffic
+#'
+#' @description 
+#' This function will compute a number of statistics about the ride traffic 
+#' for the specified nome_variable
+#' 
+#' @param rides a data.frame/data.table object with ride information from Strava.
+#' @param nome_variavel a character object with the variable name to be analyzed.
+#' 
+#' @return a list object with statistics for streets categorized as low, medium 
+#' and high traffic.
+#' 
+#' @import data.table, tidyr, dplyr
+#' 
+#' @export
 
 computeStatsTrafego = function(rides, nome_variavel) {
     # ARGUMENTOS:
