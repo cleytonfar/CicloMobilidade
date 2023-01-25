@@ -4,9 +4,8 @@ processing_strava = function(metadata,
                              ) {
     rides = copy(metadata)
     ruas = copy(shape)
-    #
 
-    # 1. somando forward_* e backward_*:
+    # 1. summing forward_* e backward_* variables:
     rides = rides[, .(
             edge_uid,
             osm_reference_id,
@@ -32,12 +31,28 @@ processing_strava = function(metadata,
     setorderv(rides, c("edge_uid", "osm_reference_id", "dateVar"))
     rides
     
-    # tirando a média mensal:
+    # Assign all months for each 'edge_uid-osm_reference_id':
+    # (some 'edge_uid-osm_reference_id' do not have obs every month).
+    temp = unique(rides[, .(osm_reference_id, edge_uid, dateVar = list(unique(dateVar)))], 
+                  by = c("osm_reference_id", "edge_uid"))
+    temp = temp[, .(dateVar = unlist(dateVar)), .(edge_uid, osm_reference_id)]
+    rides = merge(
+        temp,
+        rides,
+        by = c("edge_uid", "osm_reference_id", "dateVar"),
+        all.x = T
+    )
+    # assign 0 to columns with NA (no traffic in these months):
+    nms_to_fill = setdiff(names(rides), c("edge_uid", "osm_reference_id", "dateVar"))
+    rides[, (nms_to_fill) := map(.SD, ~nafill(.x, type = "const", fill = 0)),
+          .SDcols = nms_to_fill][]
+    
+    # taking the avg of all months for each 'edge_uid-osm_reference_id':
     rides = rides[, map(.SD, mean), 
                   by = .(edge_uid, osm_reference_id), 
                   .SDcols = setdiff(names(rides), c("dateVar", "edge_uid", "osm_reference_id"))]
     
-    # Categorizando variáveis de tráfego:
+    # Categorizing variables:
     
     # trip count
     q1 = quantile(rides[trip_count>0]$trip_count, c(.33))
@@ -160,7 +175,7 @@ processing_strava = function(metadata,
     # convert to DT:
     setDT(ruas)
     
-    # 2. merge to associate edge-osm ID to its geometry
+    # 2. merge ruas (shapefile) to associate edge-osm ID its geometry
     rides = merge(
         rides, 
         ruas, 
@@ -168,7 +183,8 @@ processing_strava = function(metadata,
         by.y = c("edgeUID", "osmId")
     )
     
-    # 3. merge with rides by osm_id to associate the street name:
+    # 3. merge recife_lines (OpenStreetMaps) with rides by osm_id 
+    #    to associate the street name:
     recife_lines = readRDS("data/recife_lines.rds")
     rides = merge(
         rides,
@@ -200,7 +216,7 @@ spatialMerge_stravaMalhaPermanente <- function(strava,
         st_as_sf(rides[, .(osm_reference_id, edge_uid, name, geometry)]),
         st_buffer(st_as_sf(malhaPermanente), dist = 15),
         join = st_is_within_distance,
-        left= F,
+        left = F, # FALSE means inner join
         dist = 5
     )
     setDT(malhaPermanente2)

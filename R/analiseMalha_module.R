@@ -15,7 +15,7 @@ library(lubridate)
 load("data/mercados.rda")
 load("data/pontosTuristicos.rda")
 load("data/bikePE.rda")
-
+load("data/salvaBike.rda")
 
 analiseMalhaInput = function(id) {
     ns = NS(id)
@@ -113,10 +113,16 @@ analiseMalhaServer = function(id) {
                 
                 # icon pontos turísticos
                 iconSights = makeIcon(
-                    iconUrl = "www/faviconSights.ico",
-                    #iconUrl = "deployable/www/favi;conSights.ico",
+                    iconUrl = "www/faviconSightsn.ico",
                     iconWidth = 25,
                     iconHeight = 25
+                )
+                
+                # icon sava Bike
+                iconSalvaBike = makeIcon(
+                    iconUrl = "www/faviconSalvaBike.ico",
+                    iconWidth = 32,
+                    iconHeight = 32
                 )
                 
                 # criando paleta de cores:
@@ -135,6 +141,7 @@ analiseMalhaServer = function(id) {
                                           "Malha Operacional",
                                           "Interseção entre malhas",
                                           "Estação Bike PE",
+                                          "Estação Salva Bike",
                                           "Mercados Públicos", 
                                           "Pontos Turísticos"),
                         options = layersControlOptions(collapsed = FALSE)
@@ -175,6 +182,13 @@ analiseMalhaServer = function(id) {
                         group = "Estação Bike PE"
                     ) %>% 
                     addMarkers(
+                        data = salvaBike,
+                        lng = ~longitude, lat = ~latitude,
+                        label = ~local,
+                        icon = iconSalvaBike,
+                        group = "Estação Salva Bike"
+                    ) %>%
+                    addMarkers(
                         data = mercados, icon = iconMercado,
                         label = ~nome,
                         lng = ~longitude,
@@ -190,7 +204,8 @@ analiseMalhaServer = function(id) {
                     hideGroup(
                         group = c("Mercados Públicos", 
                                   "Pontos Turísticos",
-                                  "Estação Bike PE")
+                                  "Estação Bike PE",
+                                  "Estação Salva Bike")
                     )
             })
 

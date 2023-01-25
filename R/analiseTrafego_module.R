@@ -16,6 +16,7 @@ library(sf)
 library(lubridate)
 
 load("data/bikePE.rda")
+load("data/salvaBike.rda")
 source("R/utils.R")
 
 analiseTrafegoInput = function(id) {
@@ -472,7 +473,14 @@ analiseTrafegoServer <- function(id, nome_variavel) {
                     iconWidth = 25,
                     iconHeight = 25
                 )
-
+                
+                # icon sava Bike
+                iconSalvaBike = makeIcon(
+                    iconUrl = "www/faviconSalvaBike.ico",
+                    iconWidth = 32,
+                    iconHeight = 32
+                )
+                
                 # plot map:
                 leaflet(filteredData()) |>
                     setView(lat = -8.0663, lng = -34.9321, zoom = 13) %>%
@@ -485,11 +493,20 @@ analiseTrafegoServer <- function(id, nome_variavel) {
                         icon = icons,
                         group = "Estação Bike PE"
                     ) %>%
+                    addMarkers(
+                        data = salvaBike,
+                        lng = ~longitude, lat = ~latitude,
+                        label = ~local,
+                        icon = iconSalvaBike,
+                        group = "Estação Salva Bike"
+                    ) %>%
                     addLayersControl(
                         overlayGroups = c("Estação Bike PE", 
+                                          "Estação Salva Bike",
                                           "Tráfego Reportado (Strava)", 
                                           "Malha Cicloviária Permanente",
-                                          "Malha Plano Diretor Cicloviário"),
+                                          "Malha Plano Diretor Cicloviário"
+                                          ),
                         options = layersControlOptions(collapsed = FALSE)
                     )  %>%
                     addPolylines(
@@ -525,7 +542,8 @@ analiseTrafegoServer <- function(id, nome_variavel) {
                         group = "Tráfego Reportado (Strava)"
                     ) %>%
                     hideGroup(
-                        group = "Estação Bike PE"
+                        group = c("Estação Bike PE",
+                                  "Estação Salva Bike")
                     )
             })
         }
