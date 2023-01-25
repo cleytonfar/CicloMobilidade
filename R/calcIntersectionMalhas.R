@@ -16,7 +16,8 @@
 #' @return a data.table object with information from malhaPermanente with the
 #' calculated intersection with malhaOperacional.
 #' 
-#' @import data.table, sf, dplyr
+#' @importFrom sf st_intersection st_buffer st_length
+#' @importFrom dplyr mutate
 #' 
 #' @export
 

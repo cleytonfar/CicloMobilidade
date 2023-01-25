@@ -1,23 +1,9 @@
-library(shiny)
-library(shinydashboard)
-library(shinydashboardPlus)
-library(shinyWidgets)
-library(waiter)
-library(fresh)
-library(leaflet)
-library(sf)
-library(tidyverse)
-library(data.table)
-library(stringr)
-library(purrr)
-library(DT)
-library(leaflet)
-library(sf)
-library(lubridate)
-
-load("data/bikePE.rda")
-load("data/salvaBike.rda")
-source("R/utils.R")
+#' Analise Trafego Input
+#' 
+#' @import shiny
+#' @import shinydashboard
+#' @import htmltools
+#' 
 
 analiseTrafegoInput = function(id) {
     ns = NS(id)
@@ -193,6 +179,12 @@ analiseTrafegoInput = function(id) {
 }
 
 
+#' Analise Trafego Server
+#' 
+#' @import shiny
+#' @import shinydashboard
+#' @import data.table
+#' @import leaflet
 
 analiseTrafegoServer <- function(id, nome_variavel) {
     stopifnot(is.reactive(nome_variavel))
@@ -224,7 +216,7 @@ analiseTrafegoServer <- function(id, nome_variavel) {
             # filtered data:
             filteredData = reactive({
                 dplyr::select(rides(), "name", "flag", "flag_PDC", nome_variavel(), "geometry") %>% 
-                drop_na(nome_variavel())
+                tidyr::drop_na(nome_variavel())
             })
             
             # 2. compute stats de taxa de Ñ cobertura por nível de tráfego:
@@ -325,7 +317,7 @@ analiseTrafegoServer <- function(id, nome_variavel) {
             
             # nome das ruas com trafego baixo sem cobertura
             output$nomeRuas_baixo = DT::renderDataTable({
-                    datatable(
+                    DT::datatable(
                         data.table(Rua = out()$trafegoBaixo$ruas$all ),
                         rownames = T,
                         colnames = "",
@@ -341,7 +333,7 @@ analiseTrafegoServer <- function(id, nome_variavel) {
             # nome das ruas com trafego medio sem cobertura
             output$nomeRuas_medio = DT::renderDataTable({
                 data.table(Rua = out()$trafegoMedio$ruas$all ) |> 
-                    datatable(
+                    DT::datatable(
                         rownames = T,
                         colnames = "",
                         options = list(
@@ -356,7 +348,7 @@ analiseTrafegoServer <- function(id, nome_variavel) {
             # nome das ruas com trafego alto sem cobertura
             output$nomeRuas_alto = DT::renderDataTable({
                 data.table(Rua = out()$trafegoAlto$ruas$all ) |> 
-                    datatable(
+                    DT::datatable(
                         rownames = T, 
                         colnames = "",
                         options = list(
@@ -370,7 +362,7 @@ analiseTrafegoServer <- function(id, nome_variavel) {
             
             # nome das ruas com trafego baixo sem cobertura
             output$nomeRuas_baixo_CPDC = DT::renderDataTable({
-                    datatable(
+                    DT::datatable(
                         data.table(Rua = out()$trafegoBaixo$ruas$CPDC ),
                         rownames = T,
                         colnames = "",
@@ -386,7 +378,7 @@ analiseTrafegoServer <- function(id, nome_variavel) {
             # nome das ruas com trafego medio sem cobertura
             output$nomeRuas_medio_CPDC = DT::renderDataTable({
                 data.table(Rua = out()$trafegoMedio$ruas$CPDC ) |> 
-                    datatable(
+                    DT::datatable(
                         rownames = T,
                         colnames = "",
                         options = list(
@@ -401,7 +393,7 @@ analiseTrafegoServer <- function(id, nome_variavel) {
             # nome das ruas com trafego alto sem cobertura
             output$nomeRuas_alto_CPDC = DT::renderDataTable({
                 data.table(Rua = out()$trafegoAlto$ruas$CPDC ) |> 
-                    datatable(
+                    DT::datatable(
                         rownames = T, 
                         colnames = "",
                         options = list(
@@ -415,7 +407,7 @@ analiseTrafegoServer <- function(id, nome_variavel) {
             
             # nome das ruas com trafego baixo sem cobertura
             output$nomeRuas_baixo_SPDC = DT::renderDataTable({
-                    datatable(
+                    DT::datatable(
                         data.table(Rua = out()$trafegoBaixo$ruas$SPDC ),
                         rownames = T,
                         colnames = "",
@@ -431,7 +423,7 @@ analiseTrafegoServer <- function(id, nome_variavel) {
             # nome das ruas com trafego medio sem cobertura
             output$nomeRuas_medio_SPDC = DT::renderDataTable({
                 data.table(Rua = out()$trafegoMedio$ruas$SPDC ) |> 
-                    datatable(
+                    DT::datatable(
                         rownames = T,
                         colnames = "",
                         options = list(
@@ -446,7 +438,7 @@ analiseTrafegoServer <- function(id, nome_variavel) {
             # nome das ruas com trafego alto sem cobertura
             output$nomeRuas_alto_SPDC = DT::renderDataTable({
                 data.table(Rua = out()$trafegoAlto$ruas$SPDC ) |> 
-                    datatable(
+                    DT::datatable(
                         rownames = T, 
                         colnames = "",
                         options = list(
@@ -470,15 +462,15 @@ analiseTrafegoServer <- function(id, nome_variavel) {
                 # icon BikePE
                 icons = makeIcon(
                     iconUrl = "www/faviconBikePE.ico",
-                    iconWidth = 25,
-                    iconHeight = 25
+                    iconWidth = 20,
+                    iconHeight = 20
                 )
                 
                 # icon sava Bike
                 iconSalvaBike = makeIcon(
                     iconUrl = "www/faviconSalvaBike.ico",
-                    iconWidth = 32,
-                    iconHeight = 32
+                    iconWidth = 35,
+                    iconHeight = 35
                 )
                 
                 # plot map:
@@ -551,8 +543,17 @@ analiseTrafegoServer <- function(id, nome_variavel) {
 }
 
 
+
+#' Analise Trafego App
+#' 
+#' @import shiny
+#' @import data.table
+#' @import fresh
+#' @import leaflet
+#' @import waiter
+#' 
 analiseTrafegoApp <- function() {
-    mytheme = fresh::create_theme(
+    mytheme = create_theme(
         adminlte_color(
             red = "#a50f15",
             orange = "#cb181d",
@@ -567,10 +568,10 @@ analiseTrafegoApp <- function() {
             light_blue = "#5691cc"
         )
     )
-    ui = dashboardPage(
+    ui = shinydashboardPlus::dashboardPage(
         freshTheme = mytheme,
-        header = dashboardHeader(),
-        sidebar = dashboardSidebar(
+        header = shinydashboardPlus::dashboardHeader(),
+        sidebar = shinydashboardPlus::dashboardSidebar(
             sidebarMenu(
                 id = "sidebarid",
                 menuItem(
@@ -602,8 +603,8 @@ analiseTrafegoApp <- function() {
             )
         ),
         body = dashboardBody(
-            waiter::use_waiter(),
-            waiter::autoWaiter(
+            use_waiter(),
+            autoWaiter(
                 color = transparent(.5),
                 html = spin_3() # use a spinner
             ),

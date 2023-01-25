@@ -17,7 +17,7 @@
 #'
 #' @return a data.frame with the metadata merged with its geographic features.
 #' 
-#' @import data.table, stats
+#' @import data.table
 #' 
 #' @export
 

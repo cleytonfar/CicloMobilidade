@@ -1,5 +1,7 @@
-
-
+#' Upload Malha Operacional Input
+#' 
+#' @import shiny
+#' 
 
 uploadMalhaOperacionalInput <- function(id) {
     ns = NS(id)
@@ -18,7 +20,10 @@ uploadMalhaOperacionalInput <- function(id) {
     )
 }
 
-
+#' Upload Malha PDF Server
+#' 
+#' @import shiny
+#' 
 uploadMalhaOperacionalServer <- function(id) {
     moduleServer(
         id,
@@ -27,14 +32,14 @@ uploadMalhaOperacionalServer <- function(id) {
                 req(input$uploadMalhaOperacional)
                 
                 # show the waiter
-                waiter_show(
+                waiter::waiter_show(
                     color = transparent(.5),
                     html = spin_3() # use a spinner
                 )
                 
                 # reading
                 data = geojsonsf::geojson_sf(input$uploadMalhaOperacional$datapath)
-                data = data[!st_is_empty(data),]
+                data = data[!sf::st_is_empty(data),]
                 # saving:
                 saveRDS(data, "data/malhaOperacional.rds")
                 
@@ -49,7 +54,7 @@ uploadMalhaOperacionalServer <- function(id) {
                 saveRDS(intersecao, "data/intersecao.rds")
                 
                 #  hide the waiter
-                waiter_hide() 
+                waiter::waiter_hide() 
                 
                 shinyWidgets::sendSweetAlert(
                     session = session,
@@ -62,6 +67,10 @@ uploadMalhaOperacionalServer <- function(id) {
     )
 }
 
+#' Upload Malha Operacional App
+#' 
+#' @import shiny
+#' 
 uploadMalhaOperacionalApp <- function(){
     ui = fluidPage(
         shinyWidgets::useSweetAlert(),

@@ -1,21 +1,8 @@
-# Attaching packages:
-library(shiny)
-library(shinydashboard)
-library(leaflet)
-library(sf)
-library(tidyverse)
-library(data.table)
-library(stringr)
-library(purrr)
-library(DT)
-library(leaflet)
-library(sf)
-library(lubridate)
-
-load("data/mercados.rda")
-load("data/pontosTuristicos.rda")
-load("data/bikePE.rda")
-load("data/salvaBike.rda")
+#' Analise Malha Input
+#' 
+#' @import shiny
+#' @import shinydashboard
+#' 
 
 analiseMalhaInput = function(id) {
     ns = NS(id)
@@ -46,6 +33,14 @@ analiseMalhaInput = function(id) {
         )
     )
 }
+
+#' Analise Malha Server
+#' 
+#' @import shiny
+#' @import shinydashboard
+#' @import leaflet
+#' @import stringr
+#' @import sf
 
 analiseMalhaServer = function(id) {
     moduleServer(
@@ -79,9 +74,9 @@ analiseMalhaServer = function(id) {
             output$intersecaoKM = renderValueBox({
                 # total KM:
                 totalKM = intersecao() %>% 
-                    filter(Sentido == Sentido.1) %>% 
-                    summarize(total = sum(length)) %>% 
-                    pull(total)
+                    dplyr::filter(Sentido == Sentido.1) %>% 
+                    dplyr::summarize(total = sum(length)) %>% 
+                    dplyr::pull(total)
                 # formatting
                 totalKM = format(round(totalKM/1e3, 2), decimal.mark = ",", big.mark = ".", nsmall=2)
                 
@@ -99,30 +94,29 @@ analiseMalhaServer = function(id) {
                  # icon BikePE
                 iconBikePE = makeIcon(
                     iconUrl = "www/faviconBikePE.ico",
-                    iconWidth = 25,
-                    iconHeight = 25
+                    iconWidth = 20,
+                    iconHeight = 20
                 )
                 
                 # icon MercadoPublico
                 iconMercado = makeIcon(
                     iconUrl = "www/faviconMercadoPublico.ico",
-                    #iconUrl = "deployable/www/faviconMercadoPublico.ico",
-                    iconWidth = 25,
-                    iconHeight = 25
+                    iconWidth = 32,
+                    iconHeight = 32
                 )
                 
                 # icon pontos turísticos
                 iconSights = makeIcon(
-                    iconUrl = "www/faviconSightsn.ico",
-                    iconWidth = 25,
-                    iconHeight = 25
+                    iconUrl = "www/faviconSights.ico",
+                    iconWidth = 32,
+                    iconHeight = 32
                 )
                 
                 # icon sava Bike
                 iconSalvaBike = makeIcon(
                     iconUrl = "www/faviconSalvaBike.ico",
-                    iconWidth = 32,
-                    iconHeight = 32
+                    iconWidth = 35,
+                    iconHeight = 35
                 )
                 
                 # criando paleta de cores:
@@ -168,7 +162,7 @@ analiseMalhaServer = function(id) {
                         popup = ~paste(Nome, "<br>", "Sentido:", Sentido),
                     ) |> 
                     addPolylines(
-                        data = filter(intersecao(), Sentido == Sentido.1), 
+                        data = dplyr::filter(intersecao(), Sentido == Sentido.1), 
                         color = "red", 
                         label = "Interseção",
                         popup = ~paste(Logradouro, "<br>", "Extensão: ", round(length/1e3, 2), "KM"),
@@ -196,7 +190,7 @@ analiseMalhaServer = function(id) {
                         group = "Mercados Públicos"
                     ) |>
                     addMarkers(
-                        data = filter(pontosTuristicos, !str_detect(PTurist, "Mercado")),
+                        data = dplyr::filter(pontosTuristicos, !str_detect(PTurist, "Mercado")),
                         icon = iconSights,
                         label = ~PTurist,
                         group = "Pontos Turísticos"
@@ -214,6 +208,12 @@ analiseMalhaServer = function(id) {
 }
 
 
+
+#' Analise Malha App
+#' 
+#' @import shiny
+#' @import shinydashboard
+#' 
 analiseMalhaApp = function() {
     ui = dashboardPage(
         header = dashboardHeader(),
@@ -229,8 +229,8 @@ analiseMalhaApp = function() {
         body = dashboardBody(
             waiter::use_waiter(),
             waiter::autoWaiter(
-                color = transparent(.5),
-                html = spin_3() # use a spinner
+                color = waiter::transparent(.5),
+                html = waiter::spin_3() # use a spinner
             ),
             tabItems(
                 tabItem(

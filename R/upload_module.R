@@ -1,9 +1,7 @@
-
-source("R/uploadStrava_module.R")
-source("R/uploadMalhaPermanente_module.R")
-source("R/uploadMalhaPDC_module.R")
-source("R/uploadMalhaOperacional_module.R")
-source("R/utils.R")
+#' Upload Input
+#' 
+#' @import shiny
+#' @import shinydashboard
 
 uploadInput <- function(id) {
     ns = NS(id) 
@@ -35,6 +33,10 @@ uploadInput <- function(id) {
     )
 }
 
+#' Upload Server
+#' 
+#' @import shiny
+#' 
 uploadServer <- function(id) {
     moduleServer(
         id,
@@ -47,6 +49,11 @@ uploadServer <- function(id) {
     )
 }
 
+#' Upload App
+#' 
+#' @import shiny
+#' @import shinydashboard
+#' 
 uploadApp <- function() {
     ui <- dashboardPage(
         header = dashboardHeader(),

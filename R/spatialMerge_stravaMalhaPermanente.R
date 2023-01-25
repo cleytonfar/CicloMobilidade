@@ -20,7 +20,8 @@
 #' @return a data.table object with ride information merged with 
 #' geographical features from the cycling network.
 #' 
-#' @import data.table, sf
+#' @import data.table
+#' @import sf
 #' 
 #' @export
 
