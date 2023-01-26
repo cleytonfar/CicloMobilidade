@@ -67,11 +67,11 @@ processing_strava = function(metadata,
     )
     # assign 0 to columns with NA (no traffic in these months):
     nms_to_fill = setdiff(names(rides), c("edge_uid", "osm_reference_id", "dateVar"))
-    rides[, (nms_to_fill) := map(.SD, ~nafill(.x, type = "const", fill = 0)),
+    rides[, (nms_to_fill) := purrr::map(.SD, ~nafill(.x, type = "const", fill = 0)),
           .SDcols = nms_to_fill][]
     
     # taking the avg of all months for each 'edge_uid-osm_reference_id':
-    rides = rides[, map(.SD, mean), 
+    rides = rides[, purrr::map(.SD, mean), 
                   by = .(edge_uid, osm_reference_id), 
                   .SDcols = setdiff(names(rides), c("dateVar", "edge_uid", "osm_reference_id"))]
     
@@ -80,7 +80,7 @@ processing_strava = function(metadata,
     # trip count
     q1 = quantile(rides[trip_count>0]$trip_count, c(.33))
     q2 = quantile(rides[trip_count>0]$trip_count, c(.66))
-    rides[, trip_count_cat := case_when(trip_count < q1 ~ "baixo",
+    rides[, trip_count_cat := dplyr::case_when(trip_count < q1 ~ "baixo",
                                         trip_count < q2 ~ "médio",
                                         TRUE  ~ "alto")]
     rides[trip_count == 0, trip_count_cat := NA]
@@ -89,7 +89,7 @@ processing_strava = function(metadata,
     # people count:
     q1 = quantile(rides[people_count>0]$people_count, c(.33))
     q2 = quantile(rides[people_count>0]$people_count, c(.66))
-    rides[, people_count_cat := case_when(people_count < q1 ~ "baixo",
+    rides[, people_count_cat := dplyr::case_when(people_count < q1 ~ "baixo",
                                           people_count < q2 ~ "médio",
                                           TRUE  ~ "alto")]
     rides[people_count == 0, people_count_cat := NA]
@@ -98,7 +98,7 @@ processing_strava = function(metadata,
     # commute trip count
     q1 = quantile(rides[commute_trip_count > 0]$commute_trip_count, c(.33))
     q2 = quantile(rides[commute_trip_count > 0]$commute_trip_count, c(.66))
-    rides[, commute_trip_count_cat := case_when(commute_trip_count < q1 ~ "baixo",
+    rides[, commute_trip_count_cat := dplyr::case_when(commute_trip_count < q1 ~ "baixo",
                                                 commute_trip_count < q2 ~ "médio",
                                                 TRUE  ~ "alto")]
     rides[commute_trip_count == 0, commute_trip_count_cat := NA]
@@ -107,7 +107,7 @@ processing_strava = function(metadata,
     # leisure trip count
     q1 = quantile(rides[leisure_trip_count>0]$leisure_trip_count, c(.33))
     q2 = quantile(rides[leisure_trip_count>0]$leisure_trip_count, c(.66))
-    rides[, leisure_trip_count_cat := case_when(leisure_trip_count < q1 ~ "baixo",
+    rides[, leisure_trip_count_cat := dplyr::case_when(leisure_trip_count < q1 ~ "baixo",
                                                 leisure_trip_count < q2 ~ "médio",
                                                 TRUE  ~ "alto")]
     rides[leisure_trip_count == 0, leisure_trip_count_cat := NA]
@@ -116,7 +116,7 @@ processing_strava = function(metadata,
     # morning trip count
     q1 = quantile(rides[morning_trip_count>0]$morning_trip_count, c(.33))
     q2 = quantile(rides[morning_trip_count>0]$morning_trip_count, c(.66))
-    rides[, morning_trip_count_cat := case_when(morning_trip_count < q1 ~ "baixo",
+    rides[, morning_trip_count_cat := dplyr::case_when(morning_trip_count < q1 ~ "baixo",
                                                 morning_trip_count < q2 ~ "médio",
                                                 TRUE ~ "alto")]
     rides[morning_trip_count == 0, morning_trip_count_cat := NA]
@@ -125,7 +125,7 @@ processing_strava = function(metadata,
     # evening trip count:
     q1 = quantile(rides[evening_trip_count>0]$evening_trip_count, c(.33))
     q2 = quantile(rides[evening_trip_count>0]$evening_trip_count, c(.66))
-    rides[, evening_trip_count_cat := case_when(evening_trip_count < q1 ~ "baixo",
+    rides[, evening_trip_count_cat := dplyr::case_when(evening_trip_count < q1 ~ "baixo",
                                                 evening_trip_count < q2 ~ "médio",
                                                 TRUE ~ "alto")]
     rides[evening_trip_count == 0, evening_trip_count_cat := NA]
@@ -134,7 +134,7 @@ processing_strava = function(metadata,
     # male people count
     q1 = quantile(rides[male_people_count>0]$male_people_count, c(.33))
     q2 = quantile(rides[male_people_count>0]$male_people_count, c(.66))
-    rides[, male_people_count_cat := case_when(male_people_count < q1 ~ "baixo",
+    rides[, male_people_count_cat := dplyr::case_when(male_people_count < q1 ~ "baixo",
                                                male_people_count < q2 ~ "médio",
                                                TRUE ~ "alto")]
     rides[male_people_count == 0, male_people_count_cat := NA]
@@ -143,7 +143,7 @@ processing_strava = function(metadata,
     # female people count
     q1 = quantile(rides[female_people_count>0]$female_people_count, c(.33))
     q2 = quantile(rides[female_people_count>0]$female_people_count, c(.66))
-    rides[, female_people_count_cat := case_when(female_people_count < q1 ~ "baixo",
+    rides[, female_people_count_cat := dplyr::case_when(female_people_count < q1 ~ "baixo",
                                                  female_people_count < q2 ~ "médio",
                                                  TRUE ~ "alto")]
     rides[female_people_count == 0, female_people_count_cat := NA]
@@ -152,7 +152,7 @@ processing_strava = function(metadata,
     # age 13-19 
     q1 = quantile(rides[age_13_19_people_count>0]$age_13_19_people_count, c(.33))
     q2 = quantile(rides[age_13_19_people_count>0]$age_13_19_people_count, c(.66))
-    rides[, age_13_19_people_count_cat := case_when(age_13_19_people_count < q1 ~ "baixo",
+    rides[, age_13_19_people_count_cat := dplyr::case_when(age_13_19_people_count < q1 ~ "baixo",
                                                     age_13_19_people_count < q2 ~ "médio",
                                                     TRUE ~ "alto")]
     rides[age_13_19_people_count == 0, age_13_19_people_count_cat := NA]
@@ -161,7 +161,7 @@ processing_strava = function(metadata,
     # age 20-34
     q1 = quantile(rides[age_20_34_people_count>0]$age_20_34_people_count, c(.33))
     q2 = quantile(rides[age_20_34_people_count>0]$age_20_34_people_count, c(.66))
-    rides[, age_20_34_people_count_cat := case_when(age_20_34_people_count < q1 ~ "baixo",
+    rides[, age_20_34_people_count_cat := dplyr::case_when(age_20_34_people_count < q1 ~ "baixo",
                                                     age_20_34_people_count < q2 ~ "médio",
                                                     TRUE ~ "alto")]
     rides[age_20_34_people_count == 0, age_20_34_people_count_cat := NA]
@@ -170,7 +170,7 @@ processing_strava = function(metadata,
     # age 35-54
     q1 = quantile(rides[age_35_54_people_count>0]$age_35_54_people_count, c(.33))
     q2 = quantile(rides[age_35_54_people_count>0]$age_35_54_people_count, c(.66))
-    rides[, age_35_54_people_count_cat := case_when(age_35_54_people_count < q1 ~ "baixo",
+    rides[, age_35_54_people_count_cat := dplyr::case_when(age_35_54_people_count < q1 ~ "baixo",
                                                     age_35_54_people_count < q2 ~ "médio",
                                                     TRUE ~ "alto")]
     rides[age_35_54_people_count == 0, age_35_54_people_count_cat := NA]
@@ -179,7 +179,7 @@ processing_strava = function(metadata,
     # age 55-64
     q1 = quantile(rides[age_55_64_people_count>0]$age_55_64_people_count, c(.33))
     q2 = quantile(rides[age_55_64_people_count>0]$age_55_64_people_count, c(.66))
-    rides[, age_55_64_people_count_cat := case_when(age_55_64_people_count < q1 ~ "baixo",
+    rides[, age_55_64_people_count_cat := dplyr::case_when(age_55_64_people_count < q1 ~ "baixo",
                                                     age_55_64_people_count < q2 ~ "médio",
                                                     TRUE  ~ "alto")]
     rides[age_55_64_people_count==0, age_55_64_people_count_cat := NA]
@@ -188,7 +188,7 @@ processing_strava = function(metadata,
     # age 65+
     q1 = quantile(rides[age_65_plus_people_count>0]$age_65_plus_people_count, c(.33))
     q2 = quantile(rides[age_65_plus_people_count>0]$age_65_plus_people_count, c(.66))
-    rides[, age_65_plus_people_count_cat := case_when(age_65_plus_people_count < q1 ~ "baixo",
+    rides[, age_65_plus_people_count_cat := dplyr::case_when(age_65_plus_people_count < q1 ~ "baixo",
                                                       age_65_plus_people_count < q2 ~ "médio",
                                                       TRUE ~ "alto")]
     rides[age_65_plus_people_count==0, age_65_plus_people_count_cat := NA]

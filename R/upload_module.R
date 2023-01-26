@@ -23,12 +23,6 @@ uploadInput <- function(id) {
                 title = "Malha Plano Diretor Cicloviário", 
                 uploadMalhaPDCInput(ns("malhaPDC"))
             )
-        ),
-        fluidRow(
-            box(width = 12,
-                title = "Malha Cicloviária Operacional", 
-                uploadMalhaOperacionalInput(ns("malhaOperacional"))
-            )
         )
     )
 }
@@ -43,7 +37,6 @@ uploadServer <- function(id) {
         function(input, output, session) {
             uploadMalhaPermanenteServer("malhaPermanente")
             uploadMalhaPDCServer("malhaPDC")
-            uploadMalhaOperacionalServer("malhaOperacional")
             uploadStravaServer("stravaTrafego")
         }
     )

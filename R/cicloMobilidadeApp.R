@@ -62,11 +62,6 @@ app_ui = function() {
                 )
             ),
             menuItem(
-                "Ciclo de Turismo e Lazer",
-                tabName = "analiseMalha",
-                icon = icon("biking", lib = "font-awesome", verify_fa=F)
-            ),
-            menuItem(
                 "Upload",
                 tabName = "uploadFiles",
                 icon = icon("upload", lib = "font-awesome", verify_fa = F)
@@ -87,10 +82,6 @@ app_ui = function() {
                 tabItem(
                     tabName = "analiseTrafego",
                     analiseTrafegoInput("id1")
-                ),
-                tabItem(
-                    tabName = "analiseMalha",
-                    analiseMalhaInput("id2")
                 ),
                 tabItem(
                     tabName = "uploadFiles",
@@ -150,9 +141,15 @@ app_server = function()  {
     # Server:
     server = function(input, output, session) {
         analiseTrafegoServer("id1", nome_variavel = reactive(input$variavel))
-        analiseMalhaServer("id2")
         uploadServer("uploadFiles")
     }
     
     server
+}
+
+#' Ciclo Mobilidade App
+#' 
+#' @export
+cicloMobilidadeApp = function() {
+    shiny::shinyApp(ui = app_ui(), server = app_server())
 }

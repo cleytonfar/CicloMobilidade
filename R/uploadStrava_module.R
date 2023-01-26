@@ -7,7 +7,7 @@ uploadStravaInput <- function(id) {
     tagList(
         fileInput(
             inputId = ns("uploadStravaTrafego"),
-            label = "Carregar Arquivos Strava Tráfego",
+            label = "Carregar Arquivos Strava Metro",
             buttonLabel = "Procurar",
             accept = c(".csv"), 
             multiple = T,
@@ -28,7 +28,7 @@ uploadStravaInput <- function(id) {
 #' @import sf
 #' 
 uploadStravaServer <- function(id) {
-    options(shiny.maxRequestSize = 50 * 1024^2)
+    options(shiny.maxRequestSize = 100 * 1024^2)
     moduleServer(
         id,
         function(input, output, session) {

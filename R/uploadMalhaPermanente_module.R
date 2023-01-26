@@ -28,13 +28,6 @@ uploadMalhaPermanenteServer <- function(id) {
     moduleServer(
         id,
         function(input, output, session) {
-            
-            # # dados de trafego do strava:
-            # rides2 = reactivePoll(
-            #     intervalMillis = 1000, session = session,
-            #     checkFunc = function() file.mtime("data/rides2.rds"),
-            #     valueFunc = function() readRDS("data/rides2.rds")
-            # )            
 
             observeEvent(input$adicionar, {
                 
