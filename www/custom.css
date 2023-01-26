@@ -86,4 +86,40 @@
     z-index:99999 !important;
 }
 
+/* css to add color by the name of each legend in leaflet-control-layers-overlays */
+.leaflet-control-layers-overlays label:nth-of-type(3) span:after {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 5px;
+    background-color: red;
+    margin-right: 10px;
+    margin-left: 5px;
+    margin-bottom: 2px;
+}
+
+
+.leaflet-control-layers-overlays label:nth-of-type(4) span:after {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 5px;
+    background-color: green;
+    margin-right: 10px;
+    margin-left: 5px;
+    margin-bottom: 2px;
+}
+
+
+.leaflet-control-layers-overlays label:nth-of-type(5) span:after {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 5px;
+    background-color: blue;
+    margin-right: 10px;
+    margin-left: 5px;
+    margin-bottom: 2px;
+}
+
 
