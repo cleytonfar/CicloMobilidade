@@ -20,10 +20,10 @@ app_ui = function() {
     
     ## header:
     myHeader =  shinydashboardPlus::dashboardHeader(
-        title = "Pedala Recife",
+        title = "Mobilidade",
         tags$li(a(href = 'https://www2.recife.pe.gov.br/',
                   img(src = 'dual_logo3.png',
-                      title = "Pedala Recife", height = "50px"),
+                      title = "Ciclo de Mobilidade", height = "50px"),
                   style = "padding-top:10px; padding-bottom:10px;"),
                 class = "dropdown")
     )
