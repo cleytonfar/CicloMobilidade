@@ -217,7 +217,8 @@ analiseTrafegoServer <- function(id, nome_variavel) {
             filteredData = reactive({
                 dplyr::select(rides(), "name", "flag", "flag_PDC", nome_variavel(), "geometry") %>% 
                 tidyr::drop_na(nome_variavel())
-            })
+            }) %>% 
+                bindCache(nome_variavel())
             
             # 2. compute stats de taxa de Ñ cobertura por nível de tráfego:
             out = reactive({
@@ -225,7 +226,8 @@ analiseTrafegoServer <- function(id, nome_variavel) {
                     filteredData(), 
                     nome_variavel = nome_variavel()
                 )
-            })
+            }) %>% 
+                bindCache(nome_variavel())
             
             ##================================================================##
             
@@ -537,7 +539,8 @@ analiseTrafegoServer <- function(id, nome_variavel) {
                         group = c("Estação Bike PE",
                                   "Estação Salva Bike")
                     )
-            })
+            }) %>% 
+                bindCache(nome_variavel())
         }
     )
 }
