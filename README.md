@@ -1,9 +1,8 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=EL-BID_mobilidadeTurismo&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=EL-BID_mobilidadeTurismo)
 
-# PoC Ciclo de Mobilidade e Turismo e Lazer
+# PoC Ciclo de Mobilidade
 
 ![Figura 1: Tela inicial Ciclo de Mobilidade](www/screen0.png)
-![Figura 2: Tela inicial Ciclo de Turismo e Lazer](www/screen00.png)
 
 ## Tabela de Conteúdo:
 ---
@@ -17,10 +16,6 @@
 ## Descrição <a name="descricao"></a>
 ---
 
-Para contribuir para o debate sobre política de mobilidade e turismo da cidade do Refice foi uma aplicação que apresenta duas soluções sobre os temas. 
-
-## PoC Ciclo de Mobilidade
-
 O trânsito da cidade do Recife foi identificado como o pior do Brasil e um dos 15 piores do mundo. Recife é a capital brasileira que mais teve congestionamentos no ano de 2021.  Alguns projetos vêm sendo desenvolvidos pela prefeitura em busca de soluções para mitigar esse problema, como por exemplo a expansão da malha cicloviária da cidade. Atualmente a cidade do Recife possui o Plano Diretor Cicloviário, um plano que define as diretrizes de implementação da expansão da malha cicloviária na cidade e região metropolitana. 
 
 A PoC Ciclo de Mobilidade utiliza o conjunto de dados **Strava Metro**, informações públicas como **OpenStreetMap** e conjunto de dados sobre a **malha cicloviária** da cidade do Recife para construir uma solução para complementar as informações do Plano Diretor Cicloviário e auxiliar no debate acerca da mobilidade na cidade do Recife. Utilizando esses conjuntos de dados é possível construir diversos indicadores, tais como:
@@ -28,23 +23,6 @@ A PoC Ciclo de Mobilidade utiliza o conjunto de dados **Strava Metro**, informa�
 - Nível de cobertura por malha cicloviária das vias com tráfego;
 - Nível de cobertura por malha cicloviária por nível de tráfego;
 - Lista de  ruas/avenidas com tráfego alto e não cobertas por malha cicloviária.
-
-
-## PoC Ciclo de Turismo e Lazer
-
-Também utilizando o conjunto de dados do **Strava Metro** como fonte de dados primária, essa solução tem como objetivo analisar como a malha cicloviária operacional complementa a malha cicloviária permanente com o intuito de fornecer maior extensão de trechos cicláveis para a população durante os Domingos e Feriados. 
-Os principais objetivos dessa solução são:
-
-- Contabilizar pontos de interseções entre a malha permanente e operacional;
-- Auxiliar a Secretaria de Turismos a formular a implementação da malha cicloviária operacionais para que conecte os principais pontos turísticos da cidade.
-
-Assim como na PoC de Ciclo de Mobilidade, foram utilizados os seguintes conjunto de dados:
-
-- **Strava Metro**: banco de dados com informações autorreportadas dos trajetos de bicicleta dos usuários do aplicativo Strava para o ano de 2021;
-- **Malha Cicloviária Permanente e Operacional**: conjunto de arquivos shape indicando a localização da malha cicloviária da cidade do Recife (ano de 2022);
-- **Estações Bike PE**: conjunto de dados com a localização das estações de bicicletas compartilhadas.
-- **Informações sobre Pontos Turísticos da cidade do Recife**: informações sobre alguns pontos turísticos georeferenciados da cidade do Recife;
-OpenStreetMap: banco de dados de mapas, colaborativo e gratuito.
 
 
 ## Guia do Usuário <a name="guia-do-usuario"> </a>
@@ -68,13 +46,6 @@ O segundo conjunto de informações demonstrados são os rankings da ruas sem co
 A seguir, é demonstrado o mapa da cidade do Recife com todo o tráfego reportado (categorizado por nível de tráfego), assim como a malha cicloviária e o Plano Diretor Cicloviário. É possível selecionar quais *layer* observar no mapa. 
 
 ![Figura 6: Ciclo de Mobilidade](www/screen3.png)
-
-A seção **Ciclo de Turismo e Lazer** da aplicação demonstra a solução desenvolvida para esse tema. 
-O principal objetivo dessa solução é contabilizar pontos de interseções entre a malha permanente e operacional e auxiliar a Secretaria de Turismos a formular a implementação da malha cicloviária operacionais para que conecte os principais pontos turísticos da cidade.
-
-![Figura 7: Ciclo de Turismo e Lazer](www/screen01.png)
-
-Semelhante ao mapa demonstrado na solução de Ciclo de Mobilidade, a Figura 7 mostra a funcionalidade do mapa, no qual é possível observar as malhas permanentes e operacionais, sua interseção, e como elas conectam os principais pontos turísticos da cidade do Recife. 
 
 Por fim, há uma seção de **Upload** de arquivos no qual a prefeitura do Recife pode realizar as atualizações de toda a aplicação com o carregamento de novas versões dos arquivos.
 
